@@ -1,0 +1,8 @@
+{
+  "name": "Copy of Mitra - Your Supportive AI Assistant",
+  "description": "A warm, empathetic AI assistant that communicates in Bangla and English, supporting your daily tasks and emotional well-being.",
+  "requestFramePermissions": [
+    "microphone",
+    "camera"
+  ]
+}
