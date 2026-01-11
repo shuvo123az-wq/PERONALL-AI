@@ -3,7 +3,8 @@ import React, { useEffect, useRef, useState } from 'react';
 import { GoogleGenAI, LiveServerMessage, Modality } from '@google/genai';
 import { decode, encode, decodeAudioData } from '../utils/audio';
 import { UserPreferences } from '../types';
-import { Mic, MicOff, X, Volume2, Waveform as Wave } from 'lucide-react';
+// Fixed: Removed non-existent 'Waveform' export from 'lucide-react'
+import { Mic, MicOff, X, Volume2 } from 'lucide-react';
 
 interface LiveSessionProps {
   onClose: () => void;
@@ -23,6 +24,7 @@ export default function LiveSession({ onClose, systemInstruction, preferences }:
   const nextStartTimeRef = useRef<number>(0);
 
   useEffect(() => {
+    // Initializing GoogleGenAI inside useEffect to ensure it uses the latest process.env.API_KEY
     const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
     
     const startSession = async () => {
@@ -51,6 +53,7 @@ export default function LiveSession({ onClose, systemInstruction, preferences }:
                   mimeType: 'audio/pcm;rate=16000',
                 };
                 
+                // CRITICAL: Solely rely on sessionPromise resolves and then call `session.sendRealtimeInput`
                 sessionPromise.then(s => s.sendRealtimeInput({ media: pcmBlob }));
               };
 
@@ -63,7 +66,7 @@ export default function LiveSession({ onClose, systemInstruction, preferences }:
                 setTranscription(prev => prev + ' ' + message.serverContent?.outputTranscription?.text);
               }
               
-              const audioBase64 = message.serverContent?.modelTurn?.parts[0]?.inlineData?.data;
+              const audioBase64 = message.serverContent?.modelTurn?.parts?.[0]?.inlineData?.data;
               if (audioBase64 && outputAudioContextRef.current) {
                 const ctx = outputAudioContextRef.current;
                 nextStartTimeRef.current = Math.max(nextStartTimeRef.current, ctx.currentTime);
