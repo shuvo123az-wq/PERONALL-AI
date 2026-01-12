@@ -98,9 +98,10 @@ export default function LiveSession({ onClose, systemInstruction, preferences }:
           config: {
             responseModalities: [Modality.AUDIO],
             speechConfig: {
-              voiceConfig: { prebuiltVoiceConfig: { voiceName: 'Kore' } },
+              // 'Zephyr' is selected for a clearer, sweeter, and more melodic female voice quality.
+              voiceConfig: { prebuiltVoiceConfig: { voiceName: 'Zephyr' } },
             },
-            systemInstruction: systemInstruction + `\nAlways speak in a soft, helpful voice. User's name is ${preferences.name || 'Friend'}.`,
+            systemInstruction: systemInstruction + `\nSpeak with a very sweet, soft, and human-like melodic tone. User's name is ${preferences.name || 'Friend'}.`,
             outputAudioTranscription: {},
           },
         });
